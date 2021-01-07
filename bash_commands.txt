@@ -1,0 +1,30 @@
+g++ -w -o tracker.out tracker.cpp -lssl -lcrypto -pthread
+g++ -w -o client.out client.cpp -lssl -lcrypto -pthread
+sed 's/./&\n/g' test_file.txt | sort | uniq -ic
+
+./client.out 127.0.0.1:6000 tracker_info.txt
+./tracker.out tracker_info.txt
+
+fuser -k 5000/tcp
+
+create_user client1 pwd1
+login client1 pwd1
+create_group group1
+join_group group1
+list_requests group1
+accept_request group1 7000
+leave_group group1 
+list_groups 
+
+upload_file test_file.txt group1   upload_file video.mp4 group1
+list_files group1 
+download_file group1 test_file.txt path download_file group1 video.mp4 path                         tracker retruns :- filesize port1 port2 port3 num_peers
+show_downloads
+
+stop_share ​ group1 test_file.txt
+
+logout client1
+
+send_bit_vector test_file.txt 127.0.0.1 7000
+send_chunk C1 filename
+
